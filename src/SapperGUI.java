@@ -1,26 +1,26 @@
 import javax.swing.*;
-
-//import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+//import java.awt.GridBagConstraints;
+
 
 public class SapperGUI {
 
 	JPanel windowedContent;
 	JButton newGame;
-	JLabel Time;
-	JLabel Mines;
-	JLabel Stat;
-	JPanel Cells;
-	JPanel Fields;
-	JMenuBar Menu;
-	JMenu MenuGame;
-	JMenu MenuAbout;
-	JMenuItem MenuItem;
+	JLabel time;
+	JLabel mines;
+	JLabel statistic;
+	JPanel cellsPanel;
+	JPanel fields;
+	JMenuBar menu;
+	JMenu menuGame;
+	JMenu menuAbout;
+	JMenuItem menuItem;
 	JButton cells[];
 
 
-	SapperGUI() {
+	SapperGUI() { 
 		
 		SapperFunctional SF = new SapperFunctional(this);
 		
@@ -35,44 +35,44 @@ public class SapperGUI {
 		windowedContent.setLayout(BL);
 		
 		
-		Cells = new JPanel();
-		Cells.setLayout(GL1);
+		cellsPanel = new JPanel();
+		cellsPanel.setLayout(GL1);
 		
 		cells = new JButton[81];
 		for (int b=0; b<81; b++) {
 			cells[b] = new JButton("");
 			cells[b].addActionListener(SF);
-			Cells.add(cells[b]);
+			cellsPanel.add(cells[b]);
 		}
 		
 
 		
-		Fields = new JPanel();
-		Fields.setLayout(GL2);
+		fields = new JPanel();
+		fields.setLayout(GL2);
 		
 		newGame = new JButton("New Game");
 		newGame.addActionListener(SF);
-		Mines = new JLabel("Mines");
-		Time = new JLabel("Time");
-		Stat = new JLabel();
+		mines = new JLabel("mines");
+		time = new JLabel("time");
+		statistic = new JLabel();
 
 
-		Fields.add(Time); Fields.add(newGame); Fields.add(Mines);
+		fields.add(time); fields.add(newGame); fields.add(mines);
 		
-		Menu = new JMenuBar();
-		MenuGame = new JMenu("Game");
-		MenuItem = new JMenuItem("New game");
-		MenuGame.add(MenuItem);
-		MenuItem = new JMenuItem("Exit");
-		MenuGame.add(MenuItem);
-		MenuAbout = new JMenu("About");
-		Menu.add(MenuGame);
-		Menu.add(MenuAbout);
+		menu = new JMenuBar();
+		menuGame = new JMenu("Game");
+		menuItem = new JMenuItem("New game");
+		menuGame.add(menuItem);
+		menuItem = new JMenuItem("Exit");
+		menuGame.add(menuItem);
+		menuAbout = new JMenu("About");
+		menu.add(menuGame);
+		menu.add(menuAbout);
 		
 		
-		windowedContent.add("Center",Cells);
-		windowedContent.add("North", Fields);
-		windowedContent.add("South", Stat);
+		windowedContent.add("Center", cellsPanel);
+		windowedContent.add("North", fields);
+		windowedContent.add("South", statistic);
 		
 
 	}
@@ -81,7 +81,7 @@ public class SapperGUI {
 		JFrame frame = new JFrame();
 
 		frame.setContentPane(windowedContent);
-		frame.setJMenuBar(Menu);
+		frame.setJMenuBar(menu);
 		frame.setSize(400, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);

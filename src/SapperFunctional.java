@@ -19,38 +19,17 @@ public class SapperFunctional implements ActionListener {
 	int amount;
 	int[] ran = new int[10];
 	int[] amoun = new int[81];
-	ImageIcon mine = new ImageIcon("images/Mine1.gif");
+	ImageIcon bombImg = new ImageIcon("images/Mine1.gif");
 	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
 	
 	
 	public void actionPerformed(ActionEvent e) {
 		JButton theButton = (JButton) e.getSource();
 		
-		if (theButton == parent.newGame) {
-			
-			
-			for (int b=0; b<81; b++) {
-				parent.cells[b].setEnabled(true);
-				parent.cells[b].setLabel("");
-				parent.cells[b].setIcon(null);
-				
-
-				//return;
-				
-			}
-			
-			
-			RandomMines();
-			GetNumbers();
-			
-			mines = 10;
-			time = 0.0;
-		}
+		if (theButton == parent.newGame) { newGame(); }
 		
 		for (int r=0; r<10; r++) {
-			if (theButton == parent.cells[ran[r]]) {
-				EndTheGame();
-			}
+			if (theButton == parent.cells[ran[r]]) { EndTheGame(); }
 		}
 		
 		for (int b=0; b<81; b++) {
@@ -75,8 +54,8 @@ public class SapperFunctional implements ActionListener {
 	public void RandomMines() {
 		int p=-1;
 		Random randomGenerate = new Random();
-		for (int t=0; t<10; t++) {
-			 ran[t] = -1;
+		for (int i=0; i<10; i++) {
+			 ran[i] = -1;
 		}
 		for (int r=0; r<10; r++) {
 		random = randomGenerate.nextInt(81);	
@@ -90,7 +69,7 @@ public class SapperFunctional implements ActionListener {
 			continue;
 			}
 		ran[r] = random;
-		parent.cells[random].setIcon(mine);
+		parent.cells[random].setIcon(bombImg);
 		p = r;
 		}
 				
@@ -251,7 +230,22 @@ public class SapperFunctional implements ActionListener {
 		
 
 	}
-	
+
+	public void newGame() {
+
+		for (int b=0; b<81; b++) {
+			parent.cells[b].setEnabled(true);
+			parent.cells[b].setLabel("");
+			parent.cells[b].setIcon(null);
+
+		}
+
+		RandomMines();
+		GetNumbers();
+
+		mines = 10;
+		time = 0.0;
+	}
 	
 	void OpenFields() {
 		for (int b=0; b<81; b++) {
@@ -284,12 +278,12 @@ public class SapperFunctional implements ActionListener {
 			}
 			parent.cells[b].setEnabled(false);
 			for(int r=0; r<10; r++) {
-				parent.cells[ran[r]].setIcon(mine);
+				parent.cells[ran[r]].setIcon(bombImg);
 				if (b == ran[r]) {
 					parent.cells[b].setLabel("");
 				}
 			}
-			parent.Stat.setText("You lose");
+			parent.statistic.setText("You lose");
 			
 		}
 	}
