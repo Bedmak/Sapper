@@ -6,6 +6,10 @@ import java.awt.BorderLayout;
 
 public class SapperGUI {
 
+    SapperFunctional SF;
+    BorderLayout BL;
+    GridLayout GL1;
+    GridLayout GL2;
 	JPanel windowedContent;
 	JButton newGame;
 	JLabel time;
@@ -22,11 +26,11 @@ public class SapperGUI {
 
 	SapperGUI() { 
 		
-		SapperFunctional SF = new SapperFunctional(this);
+		SF = new SapperFunctional(this);
 		
-		BorderLayout BL = new BorderLayout();
-		GridLayout GL1 = new GridLayout(9,9);
-		GridLayout GL2 = new GridLayout(1,3);
+		BL = new BorderLayout();
+        GL1 = new GridLayout(9,9);
+		GL2 = new GridLayout(1,3);
 	//	GridBagLayout GBL = new GridBagLayout();
 		
 		
@@ -52,8 +56,8 @@ public class SapperGUI {
 		
 		newGame = new JButton("New Game");
 		newGame.addActionListener(SF);
-		mines = new JLabel("mines");
-		time = new JLabel("time");
+		mines = new JLabel("Mines");
+		time = new JLabel("Time");
 		statistic = new JLabel();
 
 
@@ -83,8 +87,10 @@ public class SapperGUI {
 		frame.setContentPane(windowedContent);
 		frame.setJMenuBar(menu);
 		frame.setSize(400, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+
+		SF.newGame();
 	}
 
 	
