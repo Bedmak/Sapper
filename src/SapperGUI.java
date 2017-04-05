@@ -3,9 +3,8 @@ import javax.swing.*;
 //import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
 
-public class SaperGUI {
+public class SapperGUI {
 
 	JPanel windowedContent;
 	JButton newGame;
@@ -21,9 +20,9 @@ public class SaperGUI {
 	JButton cells[];
 
 
-	SaperGUI() { 
+	SapperGUI() {
 		
-		SaperFunctional SF = new SaperFunctional(this);
+		SapperFunctional SF = new SapperFunctional(this);
 		
 		BorderLayout BL = new BorderLayout();
 		GridLayout GL1 = new GridLayout(9,9);
@@ -75,21 +74,23 @@ public class SaperGUI {
 		windowedContent.add("North", Fields);
 		windowedContent.add("South", Stat);
 		
+
+	}
+
+	public void setUpGame() {
 		JFrame frame = new JFrame();
+
 		frame.setContentPane(windowedContent);
 		frame.setJMenuBar(Menu);
 		frame.setSize(400, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		frame.setVisible(true);
-		
-		
-
 	}
 
 	
 	public static void main(String[] args) {
-		SaperGUI SG = new SaperGUI();
+		SapperGUI SG = new SapperGUI();
+		SG.setUpGame();
 		
 	}
 

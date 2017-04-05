@@ -5,11 +5,11 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class SaperFunctional implements ActionListener {
+public class SapperFunctional implements ActionListener {
 	
-	SaperGUI parent;
+	SapperGUI parent;
 	
-	SaperFunctional (SaperGUI parent) {
+	SapperFunctional(SapperGUI parent) {
 		this.parent = parent;
 	}
 	
@@ -40,8 +40,8 @@ public class SaperFunctional implements ActionListener {
 			}
 			
 			
-			RandomMines(); // ����� ������ ��������� ���
-			GetNumbers(); // ����� ������ ����������� ����
+			RandomMines();
+			GetNumbers();
 			
 			mines = 10;
 			time = 0.0;
@@ -277,7 +277,7 @@ public class SaperFunctional implements ActionListener {
 	
 	void EndTheGame() {
 		int k=0;
-		for (int b=0; b<81; b++) { // ����������� ����
+		for (int b=0; b<81; b++) {
 			
 			if(!(amoun[b]==0)) {
 			parent.cells[b].setLabel(""+ amoun[b]);
