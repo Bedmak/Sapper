@@ -17,8 +17,6 @@ public class SapperFunctional implements ActionListener {
 	int minesAll;
 	double time;
 	int random;
-	int amount;
-	int[] ran = new int[10]; // Exists temporarily
 	int[] amoun = new int[81];
 	ArrayList<JButton> mines = new ArrayList<>();
 	ArrayList<Integer> bombsCoords = new ArrayList<>();
@@ -33,9 +31,9 @@ public class SapperFunctional implements ActionListener {
 
 		if (mines.contains(theButton)) { endTheGame(); }
 
-		if (parent.cells1.contains(theButton)) {
-			int index = parent.cells1.indexOf(theButton);
-			JButton cell = parent.cells1.get(index);
+		if (parent.cells.contains(theButton)) {
+			int index = parent.cells.indexOf(theButton);
+			JButton cell = parent.cells.get(index);
 			if (!(amoun[index]==0)) {
 				cell.setLabel(""+amoun[index]);
 
@@ -60,9 +58,9 @@ public class SapperFunctional implements ActionListener {
 			random = randomGenerate.nextInt(81);
 			if(!bombsCoords.contains(random)){
 				minesCount++;
-				mines.add(parent.cells1.get(random));
+				mines.add(parent.cells.get(random));
 				bombsCoords.add(random);
-				parent.cells1.get(random).setIcon(bombImg); // Temporarily
+				parent.cells.get(random).setIcon(bombImg); // Temporarily
 			}
 		}
 	}
@@ -225,9 +223,9 @@ public class SapperFunctional implements ActionListener {
 	public void newGame() {
 
 		for (int b=0; b<81; b++) {
-			parent.cells1.get(b).setEnabled(true);
-			parent.cells1.get(b).setLabel("");
-			parent.cells1.get(b).setIcon(null);
+			parent.cells.get(b).setEnabled(true);
+			parent.cells.get(b).setLabel("");
+			parent.cells.get(b).setIcon(null);
 
 		}
 		minesAll = 10;
@@ -265,21 +263,19 @@ public class SapperFunctional implements ActionListener {
 	
 	void endTheGame() {
 		int k=0;
-		for (int b=0; b<81; b++) {
-			
-			if(!(amoun[b]==0)) {
-			parent.cells1.get(b).setLabel(""+ amoun[b]);
+		for (JButton cell: parent.cells) {
+			int index = parent.cells.indexOf(cell);
+			if(!(amoun[index]==0)) {
+				cell.setLabel(""+ amoun[index]);
 			}
-			parent.cells1.get(b).setEnabled(false);
-			for(int r=0; r<10; r++) {
-				parent.cells1.get(bombsCoords.get(r)).setIcon(bombImg);
-				if (b == ran[r]) {
-					parent.cells1.get(b).setLabel("");
-				}
+			cell.setEnabled(false);
+			if(mines.contains(cell))
+				cell.setIcon(bombImg);
+				cell.setLabel("");
+
 			}
 			parent.statistic.setText("You lose");
-			
-		}
+
 	}
 	
 }
