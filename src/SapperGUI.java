@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 //import java.awt.GridBagConstraints;
 
 
@@ -21,7 +22,8 @@ public class SapperGUI {
 	JMenu menuGame;
 	JMenu menuAbout;
 	JMenuItem menuItem;
-	JButton cells[];
+	//JButton cells[];
+	ArrayList<JButton> cells1;
 
 
 	SapperGUI() { 
@@ -42,11 +44,16 @@ public class SapperGUI {
 		cellsPanel = new JPanel();
 		cellsPanel.setLayout(GL1);
 		
-		cells = new JButton[81];
+		//cells = new JButton[81];
+		cells1 = new ArrayList<>();
 		for (int b=0; b<81; b++) {
-			cells[b] = new JButton("");
-			cells[b].addActionListener(SF);
-			cellsPanel.add(cells[b]);
+			JButton cell = new JButton("");
+			cell.addActionListener(SF);
+			cellsPanel.add(cell);
+			cells1.add(cell);
+			//cells[b] = new JButton("");
+			//cells[b].addActionListener(SF);
+			//cellsPanel.add(cells[b]);
 		}
 		
 

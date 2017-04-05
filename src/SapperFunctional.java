@@ -1,6 +1,7 @@
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,12 +14,14 @@ public class SapperFunctional implements ActionListener {
 		this.parent = parent;
 	}
 	
-	int mines = 10;
-	double time = 0.0;
+	int minesAll;
+	double time;
 	int random;
 	int amount;
-	int[] ran = new int[10];
+	int[] ran = new int[10]; // Exists temporarily
 	int[] amoun = new int[81];
+	ArrayList<JButton> mines = new ArrayList<>();
+	ArrayList<Integer> bombsCoords = new ArrayList<>();
 	ImageIcon bombImg = new ImageIcon("images/Mine1.gif");
 	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
 	
@@ -27,56 +30,44 @@ public class SapperFunctional implements ActionListener {
 		JButton theButton = (JButton) e.getSource();
 		
 		if (theButton == parent.newGame) { newGame(); }
-		
-		for (int r=0; r<10; r++) {
-			if (theButton == parent.cells[ran[r]]) { EndTheGame(); }
-		}
-		
-		for (int b=0; b<81; b++) {
-			if (theButton == parent.cells[b]) {
-				if (!(amoun[b]==0)) {
-				parent.cells[b].setLabel(""+amoun[b]);
-			
-				parent.cells[b].setEnabled(false);
-					for (int r=0;r<10;r++) {
-						if (theButton == parent.cells[ran[r]]) {
-							parent.cells[ran[r]].setLabel("");
-						}
+
+		if (mines.contains(theButton)) { endTheGame(); }
+
+		if (parent.cells1.contains(theButton)) {
+			int index = parent.cells1.indexOf(theButton);
+			JButton cell = parent.cells1.get(index);
+			if (!(amoun[index]==0)) {
+				cell.setLabel(""+amoun[index]);
+
+				cell.setEnabled(false);
+				for (int r=0;r<10;r++) {
+					if (mines.contains(theButton)) {
+						cell.setLabel("");
 					}
 				}
-				if (amoun[b]==0) {
-				parent.cells[b].setEnabled(false);
-				}
+			}
+			if (amoun[index]==0) {
+				cell.setEnabled(false);
 			}
 		}
+
 	} 
 	
-	public void RandomMines() {
-		int p=-1;
+	public void randomMines() {
 		Random randomGenerate = new Random();
-		for (int i=0; i<10; i++) {
-			 ran[i] = -1;
-		}
-		for (int r=0; r<10; r++) {
-		random = randomGenerate.nextInt(81);	
-		
-			for (int ra=0; ra<10; ra++) {
-				if (ran[ra] == random) {
-					r--;
-				}
+		int minesCount = 0;
+		while(minesCount < 10) {
+			random = randomGenerate.nextInt(81);
+			if(!bombsCoords.contains(random)){
+				minesCount++;
+				mines.add(parent.cells1.get(random));
+				bombsCoords.add(random);
+				parent.cells1.get(random).setIcon(bombImg); // Temporarily
 			}
-			if (p==r) {
-			continue;
-			}
-		ran[r] = random;
-		parent.cells[random].setIcon(bombImg);
-		p = r;
 		}
-				
-		
 	}
-	
-	public void GetNumbers() {
+	/*
+	public void getNumbers() {
 		
 			for (int b=0; b<81; b++) {
 				amount=0;
@@ -230,23 +221,26 @@ public class SapperFunctional implements ActionListener {
 		
 
 	}
-
+*/
 	public void newGame() {
 
 		for (int b=0; b<81; b++) {
-			parent.cells[b].setEnabled(true);
-			parent.cells[b].setLabel("");
-			parent.cells[b].setIcon(null);
+			parent.cells1.get(b).setEnabled(true);
+			parent.cells1.get(b).setLabel("");
+			parent.cells1.get(b).setIcon(null);
 
 		}
-
-		RandomMines();
-		GetNumbers();
-
-		mines = 10;
+		minesAll = 10;
 		time = 0.0;
+
+		mines.clear();
+		bombsCoords.clear();
+
+		randomMines();
+		//getNumbers();
+
 	}
-	
+	/*
 	void OpenFields() {
 		for (int b=0; b<81; b++) {
 			if (!(amoun[b]==0)) {
@@ -266,21 +260,21 @@ public class SapperFunctional implements ActionListener {
 			}
 		}
 	}
-
+*/
 	
 	
-	void EndTheGame() {
+	void endTheGame() {
 		int k=0;
 		for (int b=0; b<81; b++) {
 			
 			if(!(amoun[b]==0)) {
-			parent.cells[b].setLabel(""+ amoun[b]);
+			parent.cells1.get(b).setLabel(""+ amoun[b]);
 			}
-			parent.cells[b].setEnabled(false);
+			parent.cells1.get(b).setEnabled(false);
 			for(int r=0; r<10; r++) {
-				parent.cells[ran[r]].setIcon(bombImg);
+				parent.cells1.get(bombsCoords.get(r)).setIcon(bombImg);
 				if (b == ran[r]) {
-					parent.cells[b].setLabel("");
+					parent.cells1.get(b).setLabel("");
 				}
 			}
 			parent.statistic.setText("You lose");
