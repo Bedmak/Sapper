@@ -13,7 +13,6 @@ public class SapperFunctional implements ActionListener {
 	double time;
 	int random;
 	ArrayList<JButton> minesCells = new ArrayList<>();
-	//ArrayList<Integer> bombsCoords = new ArrayList<>();
 	ImageIcon bombImg = new ImageIcon("images/Mine1.gif");
 	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
 	
@@ -24,15 +23,14 @@ public class SapperFunctional implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		JButton theButton = (JButton) e.getSource();
-		
-		if (theButton == parent.newGame) { newGame(); }
 
-		if (minesCells.contains(theButton)) { endTheGame(); }
-
-		if (parent.cells.contains(theButton)) {
-			theButton.setEnabled(false);
+		if (theButton == parent.newGame) {
+		    newGame();
+		} else if (minesCells.contains(theButton)) {
+		    endTheGame();
+		} else if (parent.cells.contains(theButton)) {
+		    theButton.setEnabled(false);
 		}
-
 	} 
 	
 	public void randomMines(int mines) {
@@ -44,50 +42,47 @@ public class SapperFunctional implements ActionListener {
 			if(!bombsCoords.contains(random)){
 				minesCount++;
 				minesCells.add(parent.cells.get(random));
+                parent.cells.get(random).setText("");
+				getNumbers(parent.cells.get(random));
 				bombsCoords.add(random);
 				parent.cells.get(random).setIcon(bombImg); // Temporarily
 			}
 		}
 	}
 
-	public void getNumbers() {
+	public void getNumbers(JButton cell) {
 
 		int[] neighborNums = {-10, -9, -8, -1, 1, 8, 9, 10};
+        int index = parent.cells.indexOf(cell);
 
-		for(JButton cell: minesCells){
-			int index = parent.cells.indexOf(cell);
-			for(int neighbor: neighborNums) {
-				if(index + neighbor >= 0 && index + neighbor <= 80) {
-					JButton neighborCell = parent.cells.get(index + neighbor);
-					if(!minesCells.contains(neighborCell) &&
-							!(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
-							((index % 9 == 8) && (index + neighbor) % 9 == 0))) { // If the cell is not a bomb and is not on the left or right edge
-								if(!neighborCell.getLabel().equals("")){
-									int count = Integer.parseInt(neighborCell.getLabel()) + 1;
-									neighborCell.setLabel("" + count);
+        for(int neighbor: neighborNums) {
+            if(index + neighbor >= 0 && index + neighbor <= 80) {
+                JButton neighborCell = parent.cells.get(index + neighbor);
+                if(!minesCells.contains(neighborCell) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
+                        ((index % 9 == 8) && (index + neighbor) % 9 == 0))) { // If the cell is not a bomb and is not on the left or right edge
+								if(!neighborCell.getText().equals("")){
+									int count = Integer.parseInt(neighborCell.getText()) + 1;
+									neighborCell.setText("" + count);
 								}else {
-									neighborCell.setLabel("1");
+									neighborCell.setText("1");
 								}
-					}
-				}
-			}
-		}
+                }
+            }
+        }
 	}
 
 	public void newGame() {
 
 		for (int b=0; b<81; b++) {
 			parent.cells.get(b).setEnabled(true);
-			parent.cells.get(b).setLabel("");
+			parent.cells.get(b).setText("");
 			parent.cells.get(b).setIcon(null);
 		}
 		minesAll = 10;
 		time = 0.0;
 
 		minesCells.clear();
-
 		randomMines(minesAll);
-		getNumbers();
 	}
 	/*
 	void OpenFields() {

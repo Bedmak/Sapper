@@ -2,16 +2,15 @@ import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
-//import java.awt.GridBagConstraints;
 
 
 public class SapperGUI {
 
-    SapperFunctional SF;
-    BorderLayout BL;
-    GridLayout GL1;
-    GridLayout GL2;
-	JPanel windowedContent;
+    SapperFunctional sf;
+    BorderLayout bl;
+    GridLayout gl1;
+    GridLayout gl2;
+    JPanel windowedContent;
 	JButton newGame;
 	JLabel time;
 	JLabel mines;
@@ -27,36 +26,35 @@ public class SapperGUI {
 
 	SapperGUI() { 
 		
-		SF = new SapperFunctional(this);
+		sf = new SapperFunctional(this);
 		
-		BL = new BorderLayout();
-        GL1 = new GridLayout(9,9);
-		GL2 = new GridLayout(1,3);
-	//	GridBagLayout GBL = new GridBagLayout();
+		bl = new BorderLayout();
+        gl1 = new GridLayout(9,9);
+		gl2 = new GridLayout(1,3);
 		
 		
 
 		windowedContent = new JPanel(); 
-		windowedContent.setLayout(BL);
+		windowedContent.setLayout(bl);
 		
 		
 		cellsPanel = new JPanel();
-		cellsPanel.setLayout(GL1);
+		cellsPanel.setLayout(gl1);
 
 
 		cells = new ArrayList<>();
 		for (int b=0; b<81; b++) {
 			JButton cell = new JButton("");
-			cell.addActionListener(SF);
+			cell.addActionListener(sf);
 			cellsPanel.add(cell);
 			cells.add(cell);
 		}
 
 		fields = new JPanel();
-		fields.setLayout(GL2);
+		fields.setLayout(gl2);
 		
 		newGame = new JButton("New Game");
-		newGame.addActionListener(SF);
+		newGame.addActionListener(sf);
 		mines = new JLabel("Mines");
 		time = new JLabel("Time");
 		statistic = new JLabel();
@@ -91,7 +89,7 @@ public class SapperGUI {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
-		SF.newGame();
+		sf.newGame();
 	}
 
 	
