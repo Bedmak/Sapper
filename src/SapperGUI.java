@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class SapperGUI {
 
-    SapperFunctional sf;
-    BorderLayout bl;
-    GridLayout gl1;
-    GridLayout gl2;
-    JPanel windowedContent;
+	SapperFunctional sf;
+	BorderLayout bl;
+	GridLayout gl1;
+	GridLayout gl2;
+	JPanel windowedContent;
 	JButton newGame;
 	JLabel time;
 	JLabel mines;
@@ -27,9 +27,9 @@ public class SapperGUI {
 	SapperGUI() { 
 		
 		sf = new SapperFunctional(this);
-		
+
 		bl = new BorderLayout();
-        gl1 = new GridLayout(9,9);
+		gl1 = new GridLayout(9,9);
 		gl2 = new GridLayout(1,3);
 		
 		

@@ -25,11 +25,11 @@ public class SapperFunctional implements ActionListener {
 		JButton theButton = (JButton) e.getSource();
 
 		if (theButton == parent.newGame) {
-		    newGame();
+			newGame();
 		} else if (minesCells.contains(theButton)) {
-		    endTheGame();
+			endTheGame();
 		} else if (parent.cells.contains(theButton)) {
-		    theButton.setEnabled(false);
+			theButton.setEnabled(false);
 		}
 	} 
 	
@@ -42,7 +42,7 @@ public class SapperFunctional implements ActionListener {
 			if(!bombsCoords.contains(random)){
 				minesCount++;
 				minesCells.add(parent.cells.get(random));
-                parent.cells.get(random).setText("");
+				parent.cells.get(random).setText("");
 				getNumbers(parent.cells.get(random));
 				bombsCoords.add(random);
 				parent.cells.get(random).setIcon(bombImg); // Temporarily
@@ -53,22 +53,22 @@ public class SapperFunctional implements ActionListener {
 	public void getNumbers(JButton cell) {
 
 		int[] neighborNums = {-10, -9, -8, -1, 1, 8, 9, 10};
-        int index = parent.cells.indexOf(cell);
+		int index = parent.cells.indexOf(cell);
 
-        for(int neighbor: neighborNums) {
-            if(index + neighbor >= 0 && index + neighbor <= 80) {
-                JButton neighborCell = parent.cells.get(index + neighbor);
-                if(!minesCells.contains(neighborCell) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
-                        ((index % 9 == 8) && (index + neighbor) % 9 == 0))) { // If the cell is not a bomb and is not on the left or right edge
+		for(int neighbor: neighborNums) {
+			if(index + neighbor >= 0 && index + neighbor <= 80) {
+				JButton neighborCell = parent.cells.get(index + neighbor);
+				if(!minesCells.contains(neighborCell) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
+							((index % 9 == 8) && (index + neighbor) % 9 == 0))) { // If the cell is not a bomb and is not on the left or right edge
 								if(!neighborCell.getText().equals("")){
 									int count = Integer.parseInt(neighborCell.getText()) + 1;
 									neighborCell.setText("" + count);
 								}else {
 									neighborCell.setText("1");
 								}
-                }
-            }
-        }
+				}
+			}
+		}
 	}
 
 	public void newGame() {
@@ -112,6 +112,6 @@ public class SapperFunctional implements ActionListener {
 			//if(minesCells.contains(cell))
 			//	cell.setIcon(bombImg);
 			}
-        parent.statistic.setText("You lose");
+		parent.statistic.setText("You lose");
 	}
 }
