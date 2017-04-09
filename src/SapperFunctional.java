@@ -9,234 +9,87 @@ import javax.swing.JButton;
 public class SapperFunctional implements ActionListener {
 	
 	SapperGUI parent;
+	int minesAll;
+	double time;
+	int random;
+	ArrayList<JButton> minesCells = new ArrayList<>();
+	//ArrayList<Integer> bombsCoords = new ArrayList<>();
+	ImageIcon bombImg = new ImageIcon("images/Mine1.gif");
+	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
 	
 	SapperFunctional(SapperGUI parent) {
 		this.parent = parent;
 	}
-	
-	int minesAll;
-	double time;
-	int random;
-	int[] amoun = new int[81];
-	ArrayList<JButton> mines = new ArrayList<>();
-	ArrayList<Integer> bombsCoords = new ArrayList<>();
-	ImageIcon bombImg = new ImageIcon("images/Mine1.gif");
-	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
-	
+
 	
 	public void actionPerformed(ActionEvent e) {
 		JButton theButton = (JButton) e.getSource();
 		
 		if (theButton == parent.newGame) { newGame(); }
 
-		if (mines.contains(theButton)) { endTheGame(); }
+		if (minesCells.contains(theButton)) { endTheGame(); }
 
 		if (parent.cells.contains(theButton)) {
-			int index = parent.cells.indexOf(theButton);
-			JButton cell = parent.cells.get(index);
-			if (!(amoun[index]==0)) {
-				cell.setLabel(""+amoun[index]);
-
-				cell.setEnabled(false);
-				for (int r=0;r<10;r++) {
-					if (mines.contains(theButton)) {
-						cell.setLabel("");
-					}
-				}
-			}
-			if (amoun[index]==0) {
-				cell.setEnabled(false);
-			}
+			theButton.setEnabled(false);
 		}
 
 	} 
 	
-	public void randomMines() {
+	public void randomMines(int mines) {
 		Random randomGenerate = new Random();
+		ArrayList<Integer> bombsCoords = new ArrayList<>();
 		int minesCount = 0;
-		while(minesCount < 10) {
+		while(minesCount < mines) {
 			random = randomGenerate.nextInt(81);
 			if(!bombsCoords.contains(random)){
 				minesCount++;
-				mines.add(parent.cells.get(random));
+				minesCells.add(parent.cells.get(random));
 				bombsCoords.add(random);
 				parent.cells.get(random).setIcon(bombImg); // Temporarily
 			}
 		}
 	}
-	/*
-	public void getNumbers() {
-		
-			for (int b=0; b<81; b++) {
-				amount=0;
-				for(int r=0; r<10; r++) {
-					
-				  if (b==0) {
-					  if (parent.cells[b+1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b+9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b+10] == parent.cells[ran[r]]) {
-							amount++;
-						}
-				  }else if (b==8) {
-					  if (parent.cells[b-1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b+8] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b+9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-				  }else if (b==72) {
-					  if (parent.cells[b+1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b-8] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b-9] == parent.cells[ran[r]]) {
-							amount++;
-						}  
-				  }else if (b==80) {
-					  if (parent.cells[b-1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b-9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-					  if (parent.cells[b-10] == parent.cells[ran[r]]) {
-							amount++;
-						} 
-				  }else if (b==9 || b==18 || b==27 || b==36 || b==45 || b==54 || b==63) {
-						if (parent.cells[b-9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b-8] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+10] == parent.cells[ran[r]]) {
-							amount++;
-						}	
-				  }else if (b==17 || b==26 || b==35 || b==44 || b==53 || b==62 || b==71) {
-							if (parent.cells[b-10] == parent.cells[ran[r]]) {
-								amount++;
-							}
-							if (parent.cells[b-9] == parent.cells[ran[r]]) {
-								amount++;
-							}
-							if (parent.cells[b-1] == parent.cells[ran[r]]) {
-								amount++;
-							}
-							if (parent.cells[b+8] == parent.cells[ran[r]]) {
-								amount++;
-							}
-							if (parent.cells[b+9] == parent.cells[ran[r]]) {
-								amount++;
-							}
-				  }else if (b>=1 && b<=7) {
-						if (parent.cells[b-1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+8] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+10] == parent.cells[ran[r]]) {
-							amount++;
-						}	
-				  }else if (b>=73 && b<=79) {
-					  if (parent.cells[b-10] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b-9] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b-8] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b-1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-						if (parent.cells[b+1] == parent.cells[ran[r]]) {
-							amount++;
-						}
-				  }else {
-					if (parent.cells[b-10] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b-9] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b-8] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b-1] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b+1] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b+8] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b+9] == parent.cells[ran[r]]) {
-						amount++;
-					}
-					if (parent.cells[b+10] == parent.cells[ran[r]]) {
-						amount++;
-					}
-				  }  
-				}
-				if (b>=0 && b<81) {
-					
-					if (!(amount==0)) {
-					parent.cells[b].setLabel(""+ amount); 
-					}
-					for(int r=0; r<10; r++) {
-						if (b == ran[r]) {
-							parent.cells[b].setLabel("");
-					    }
-					}
-				}
-				amoun[b] = amount;
-			}
-		
-		
 
+	public void getNumbers() {
+
+		int[] neighborNums = {-10, -9, -8, -1, 1, 8, 9, 10};
+
+		for(JButton cell: minesCells){
+			int index = parent.cells.indexOf(cell);
+			for(int neighbor: neighborNums) {
+				try{
+					JButton neighborCell = parent.cells.get(index + neighbor);
+					if(!minesCells.contains(neighborCell) &&
+							!(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
+							((index % 9 == 8) && (index + neighbor) % 9 == 0))) { // If the cell is not a bomb and is not on the left or right edge
+								if(!neighborCell.getLabel().equals("")){
+									int count = Integer.parseInt(neighborCell.getLabel()) + 1;
+									neighborCell.setLabel("" + count);
+								}else {
+									neighborCell.setLabel("1");
+								}
+					}
+				}catch(IndexOutOfBoundsException e) {
+					continue;
+				}
+			}
+		}
 	}
-*/
+
 	public void newGame() {
 
 		for (int b=0; b<81; b++) {
 			parent.cells.get(b).setEnabled(true);
 			parent.cells.get(b).setLabel("");
 			parent.cells.get(b).setIcon(null);
-
 		}
 		minesAll = 10;
 		time = 0.0;
 
-		mines.clear();
-		bombsCoords.clear();
+		minesCells.clear();
 
-		randomMines();
-		//getNumbers();
-
+		randomMines(minesAll);
+		getNumbers();
 	}
 	/*
 	void OpenFields() {
@@ -259,23 +112,13 @@ public class SapperFunctional implements ActionListener {
 		}
 	}
 */
-	
-	
+
 	void endTheGame() {
-		int k=0;
 		for (JButton cell: parent.cells) {
-			int index = parent.cells.indexOf(cell);
-			if(!(amoun[index]==0)) {
-				cell.setLabel(""+ amoun[index]);
-			}
 			cell.setEnabled(false);
-			if(mines.contains(cell))
-				cell.setIcon(bombImg);
-				cell.setLabel("");
-
+			//if(minesCells.contains(cell))
+			//	cell.setIcon(bombImg);
 			}
-			parent.statistic.setText("You lose");
-
+        parent.statistic.setText("You lose");
 	}
-	
 }
