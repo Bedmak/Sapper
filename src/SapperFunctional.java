@@ -57,7 +57,7 @@ public class SapperFunctional implements ActionListener {
 		for(JButton cell: minesCells){
 			int index = parent.cells.indexOf(cell);
 			for(int neighbor: neighborNums) {
-				try{
+				if(index + neighbor >= 0 && index + neighbor <= 80) {
 					JButton neighborCell = parent.cells.get(index + neighbor);
 					if(!minesCells.contains(neighborCell) &&
 							!(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
@@ -69,8 +69,6 @@ public class SapperFunctional implements ActionListener {
 									neighborCell.setLabel("1");
 								}
 					}
-				}catch(IndexOutOfBoundsException e) {
-					continue;
 				}
 			}
 		}
