@@ -13,7 +13,7 @@ public class SapperGUI {
 	JPanel windowedContent;
 	JButton newGame;
 	JLabel time;
-	JLabel mines;
+	JLabel bombsCount;
 	JLabel statistic;
 	JPanel cellsPanel;
 	JPanel fields;
@@ -55,12 +55,12 @@ public class SapperGUI {
 		
 		newGame = new JButton("New Game");
 		newGame.addActionListener(sf);
-		mines = new JLabel("Mines");
+		bombsCount = new JLabel("Bombs -" + 0);
 		time = new JLabel("Time");
-		statistic = new JLabel();
+		statistic = new JLabel("");
 
 
-		fields.add(time); fields.add(newGame); fields.add(mines);
+		fields.add(time); fields.add(newGame); fields.add(bombsCount);
 		
 		menu = new JMenuBar();
 		menuGame = new JMenu("Game");
