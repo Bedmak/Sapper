@@ -13,7 +13,7 @@ public class SapperFunctional implements ActionListener {
 	double time;
 	int random;
 	ArrayList<JButton> minesCells = new ArrayList<>();
-	ImageIcon bombImg = new ImageIcon("images/Mine1.gif");
+	ImageIcon bombImg = new ImageIcon("images/bomb.png");
 	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
 	
 	SapperFunctional(SapperGUI parent) {

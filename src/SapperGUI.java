@@ -85,7 +85,7 @@ public class SapperGUI {
 
 		frame.setContentPane(windowedContent);
 		frame.setJMenuBar(menu);
-		frame.setSize(400, 300);
+		frame.setSize(400, 350);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
@@ -94,8 +94,8 @@ public class SapperGUI {
 
 	
 	public static void main(String[] args) {
-		SapperGUI SG = new SapperGUI();
-		SG.setUpGame();
+		SapperGUI sg = new SapperGUI();
+		sg.setUpGame();
 		
 	}
 
