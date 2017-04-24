@@ -52,17 +52,16 @@ public class SapperFunctional implements ActionListener {
 				minesCount++;
 				bombsCells.add(parent.cells.get(random));
 				parent.cells.get(random).setText("");
-				getNumbers(parent.cells.get(random));
+				getNumbers(random);
 				bombsCoords.add(random);
 				parent.cells.get(random).setIcon(bombImg); // Temporarily
 			}
 		}
 	}
 
-	public void getNumbers(JButton cell) {
+	public void getNumbers(int index) {
 
 		int[] neighborNums = {-10, -9, -8, -1, 1, 8, 9, 10};
-		int index = parent.cells.indexOf(cell);
 
 		for(int neighbor: neighborNums) {
 			if(index + neighbor >= 0 && index + neighbor <= 80) {
