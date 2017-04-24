@@ -3,14 +3,12 @@ import java.awt.event.ActionEvent;
 
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
 
 public class SapperFunctional implements ActionListener {
 	
 	SapperGUI parent;
 	int bombsAll;
-	double time;
 	int random;
 	ArrayList<JButton> bombsCells = new ArrayList<>();
 	ImageIcon bombImg = new ImageIcon("images/bomb.png");
@@ -22,14 +20,25 @@ public class SapperFunctional implements ActionListener {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		JButton theButton = (JButton) e.getSource();
 
-		if (theButton == parent.newGame) {
-			newGame();
-		} else if (bombsCells.contains(theButton)) {
-			endTheGame();
-		} else if (parent.cells.contains(theButton)) {
-			theButton.setEnabled(false);
+		if (e.getSource() instanceof JButton) {
+			JButton theButton = (JButton) e.getSource();
+
+			if (theButton == parent.newGame) {
+				newGame();
+			} else if (bombsCells.contains(theButton)) {
+				endTheGame();
+			} else if (parent.cells.contains(theButton)) {
+				theButton.setEnabled(false);
+			}
+		} else if (e.getSource() instanceof JMenuItem) {
+			JMenuItem menuItem = (JMenuItem) e.getSource();
+
+			if (menuItem == parent.menuGameItem1) {
+				newGame();
+			}else if (menuItem == parent.menuGameItem2) {
+				parent.frame.dispose();
+			}
 		}
 	} 
 	
@@ -72,9 +81,12 @@ public class SapperFunctional implements ActionListener {
 	}
 
 	public void newGame() {
+		this.newGame(10);
+	}
 
-		bombsAll = 10;
-		time = 0.0;
+	public void newGame(int bombs) {
+
+		bombsAll = bombs;
 
 		for (JButton cell: parent.cells) {
 			cell.setEnabled(true);

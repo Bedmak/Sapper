@@ -10,6 +10,7 @@ public class SapperGUI {
 	BorderLayout bl;
 	GridLayout gl1;
 	GridLayout gl2;
+	JFrame frame;
 	JPanel windowedContent;
 	JButton newGame;
 	JLabel time;
@@ -20,7 +21,8 @@ public class SapperGUI {
 	JMenuBar menu;
 	JMenu menuGame;
 	JMenu menuAbout;
-	JMenuItem menuItem;
+	JMenuItem menuGameItem1;
+	JMenuItem menuGameItem2;
 	ArrayList<JButton> cells;
 
 
@@ -64,10 +66,12 @@ public class SapperGUI {
 		
 		menu = new JMenuBar();
 		menuGame = new JMenu("Game");
-		menuItem = new JMenuItem("New game");
-		menuGame.add(menuItem);
-		menuItem = new JMenuItem("Exit");
-		menuGame.add(menuItem);
+		menuGameItem1 = new JMenuItem("New game");
+		menuGameItem1.addActionListener(sf);
+		menuGame.add(menuGameItem1);
+		menuGameItem2 = new JMenuItem("Exit");
+		menuGameItem2.addActionListener(sf);
+		menuGame.add(menuGameItem2);
 		menuAbout = new JMenu("About");
 		menu.add(menuGame);
 		menu.add(menuAbout);
@@ -76,20 +80,18 @@ public class SapperGUI {
 		windowedContent.add("Center", cellsPanel);
 		windowedContent.add("North", fields);
 		windowedContent.add("South", statistic);
-		
 
-	}
-
-	public void setUpGame() {
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 
 		frame.setContentPane(windowedContent);
 		frame.setJMenuBar(menu);
 		frame.setSize(400, 350);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+	}
 
-		sf.newGame();
+	public void setUpGame() {
+		sf.newGame(10);
 	}
 
 	
