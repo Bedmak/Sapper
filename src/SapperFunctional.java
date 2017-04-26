@@ -29,6 +29,7 @@ public class SapperFunctional implements ActionListener {
 			} else if (bombsCells.contains(theButton)) {
 				endTheGame();
 			} else if (parent.cells.contains(theButton)) {
+				//OpenFields(theButton);
 				theButton.setEnabled(false);
 			}
 		} else if (e.getSource() instanceof JMenuItem) {
@@ -98,29 +99,26 @@ public class SapperFunctional implements ActionListener {
 		bombsCells.clear();
 		randomMines(bombsAll);
 	}
-	/*
-	void OpenFields() {
-		for (int b=0; b<81; b++) {
-			if (!(amoun[b]==0)) {
-			parent.cells[b].setLabel(""+amoun[b]);
-			parent.cells[b].setEnabled(false);
-				for(int r=0; r<10; r++) {
-					if (!(b-1 == ran[r])) {
-						parent.cells[b-1].setLabel(""+amoun[b-1]);
-					} 
-				} 
-			}
-			if (!(b==0)) {
-				while (parent.cells[b-1].equals("")) {
-					parent.cells[b-1].setEnabled(false);
-			
+/*
+	public void OpenFields(JButton theButton) {
+
+		if(!theButton.getText().equals("")) {
+			theButton.setEnabled(false);
+		} else {
+			int[] neighborNums = {-10, -9, -8, -1, 1, 8, 9, 10};
+			for (int neighbor : neighborNums) {
+				theButton.setEnabled(false);
+				int index = parent.cells.indexOf(theButton);
+				if((index + neighbor >= 0 && index + neighbor <= 80) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
+						((index % 9 == 8) && (index + neighbor) % 9 == 0))) {
+					OpenFields(parent.cells.get(index + neighbor));	// StackOverflowError
 				}
 			}
 		}
 	}
 */
 
-	void endTheGame() {
+	public void endTheGame() {
 		for (JButton cell: parent.cells) {
 			cell.setEnabled(false);
 			//if(bombsCells.contains(cell))
