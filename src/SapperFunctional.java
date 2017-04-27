@@ -10,12 +10,16 @@ public class SapperFunctional implements ActionListener {
 	SapperGUI parent;
 	int bombsAll;
 	int random;
-	ArrayList<JButton> bombsCells = new ArrayList<>();
-	ImageIcon bombImg = new ImageIcon("images/bomb.png");
-	//ImageIcon mine2 = new ImageIcon("images/Mine2.gif");
+	ArrayList<JButton> bombsCells;
+	boolean[] checked;
+ 	ImageIcon bombImg;
 	
 	SapperFunctional(SapperGUI parent) {
 		this.parent = parent;
+		bombsCells = new ArrayList<>();
+		bombImg = new ImageIcon("images/bomb.png");
+		checked = new boolean[parent.getSize()];
+		bombsAll = parent.getBombs();
 	}
 
 	
@@ -29,8 +33,7 @@ public class SapperFunctional implements ActionListener {
 			} else if (bombsCells.contains(theButton)) {
 				endTheGame();
 			} else if (parent.cells.contains(theButton)) {
-				//OpenFields(theButton);
-				theButton.setEnabled(false);
+				OpenFields(theButton);
 			}
 		} else if (e.getSource() instanceof JMenuItem) {
 			JMenuItem menuItem = (JMenuItem) e.getSource();
@@ -48,7 +51,7 @@ public class SapperFunctional implements ActionListener {
 		ArrayList<Integer> bombsCoords = new ArrayList<>();
 		int minesCount = 0;
 		while(minesCount < mines) {
-			random = randomGenerate.nextInt(81);
+			random = randomGenerate.nextInt(parent.getSize());
 			if(!bombsCoords.contains(random)){
 				minesCount++;
 				bombsCells.add(parent.cells.get(random));
@@ -65,7 +68,7 @@ public class SapperFunctional implements ActionListener {
 		int[] neighborNums = {-10, -9, -8, -1, 1, 8, 9, 10};
 
 		for(int neighbor: neighborNums) {
-			if(index + neighbor >= 0 && index + neighbor <= 80) {
+			if(index + neighbor >= 0 && index + neighbor <= parent.getSize() - 1) {
 				JButton neighborCell = parent.cells.get(index + neighbor);
 				if(!bombsCells.contains(neighborCell) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
 							((index % 9 == 8) && (index + neighbor) % 9 == 0))) { // If the cell is not a bomb and is not on the left or right edge
@@ -81,17 +84,15 @@ public class SapperFunctional implements ActionListener {
 	}
 
 	public void newGame() {
-		this.newGame(10);
-	}
 
-	public void newGame(int bombs) {
 
-		bombsAll = bombs;
-
+		int k = 0;
 		for (JButton cell: parent.cells) {
+			checked[k] = false;
 			cell.setEnabled(true);
 			cell.setText("");
 			cell.setIcon(null);
+			k++;
 		}
 		parent.statistic.setText("");
 		parent.bombsCount.setText("Bombs - " + bombsAll);
@@ -99,7 +100,7 @@ public class SapperFunctional implements ActionListener {
 		bombsCells.clear();
 		randomMines(bombsAll);
 	}
-/*
+
 	public void OpenFields(JButton theButton) {
 
 		if(!theButton.getText().equals("")) {
@@ -109,14 +110,15 @@ public class SapperFunctional implements ActionListener {
 			for (int neighbor : neighborNums) {
 				theButton.setEnabled(false);
 				int index = parent.cells.indexOf(theButton);
-				if((index + neighbor >= 0 && index + neighbor <= 80) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
+				checked[index] = true;
+				if((index + neighbor >= 0 && index + neighbor <= parent.getSize() - 1) && (!checked[index + neighbor]) && !(((index % 9 == 0) && (index + neighbor) % 9 == 8) ||
 						((index % 9 == 8) && (index + neighbor) % 9 == 0))) {
 					OpenFields(parent.cells.get(index + neighbor));	// StackOverflowError
 				}
 			}
 		}
 	}
-*/
+
 
 	public void endTheGame() {
 		for (JButton cell: parent.cells) {
