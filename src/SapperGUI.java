@@ -6,53 +6,44 @@ import java.util.ArrayList;
 
 public class SapperGUI {
 
-	SapperFunctional sf;
-	BorderLayout bl;
-	GridLayout gl1;
-	GridLayout gl2;
-	JFrame frame;
-	JPanel windowedContent;
-	JButton newGame;
-	JLabel time;
-	JLabel bombsCount;
-	JLabel statistic;
-	JPanel cellsPanel;
-	JPanel fields;
-	JMenuBar menu;
-	JMenu menuGame;
-	JMenu menuAbout;
-	JMenuItem menuGameItem1;
-	JMenuItem menuGameItem2;
-	ArrayList<JButton> cells;
+	private SapperFunctional sf;
+	private JFrame frame;
+	private JButton newGame;
+	private JLabel time;
+	private JLabel bombsCount;
+	private JLabel status;
+	private JMenuItem menuGameItem1;
+	private JMenuItem menuGameItem2;
+	private ArrayList<JButton> cells;
 	private int fieldSize;
 	private int bombsAll;
 
-	SapperGUI() {
+	public SapperGUI() {
 		this(9, 10);
 	}
 
-	SapperGUI(int size, int bombs) {
+	public SapperGUI(int size, int bombs) {
 
 		setSize(size);
 		setBombs(bombs);
 
-		sf = new SapperFunctional(this);
 
-		bl = new BorderLayout();
-		gl1 = new GridLayout(size, size);
-		gl2 = new GridLayout(1,3);
-		
-		
+		BorderLayout bl = new BorderLayout();
+		GridLayout gl1 = new GridLayout(size, size);
+		GridLayout gl2 = new GridLayout(1,3);
 
-		windowedContent = new JPanel(); 
+
+
+		JPanel windowedContent = new JPanel();
 		windowedContent.setLayout(bl);
-		
-		
-		cellsPanel = new JPanel();
+
+
+		JPanel cellsPanel = new JPanel();
 		cellsPanel.setLayout(gl1);
 
 
 		cells = new ArrayList<>();
+		sf = new SapperFunctional(this);
 		for (int i = 0; i < fieldSize; i++) {
 			JButton cell = new JButton("");
 			cell.addActionListener(sf);
@@ -60,34 +51,34 @@ public class SapperGUI {
 			cells.add(cell);
 		}
 
-		fields = new JPanel();
+		JPanel fields = new JPanel();
 		fields.setLayout(gl2);
 		
 		newGame = new JButton("New Game");
 		newGame.addActionListener(sf);
-		bombsCount = new JLabel("Bombs -" + bombsAll);
+		bombsCount = new JLabel();
 		time = new JLabel("Time");
-		statistic = new JLabel("");
+		status = new JLabel("");
 
 
 		fields.add(time); fields.add(newGame); fields.add(bombsCount);
 		
-		menu = new JMenuBar();
-		menuGame = new JMenu("Game");
+		JMenuBar menu = new JMenuBar();
+		JMenu menuGame = new JMenu("Game");
 		menuGameItem1 = new JMenuItem("New game");
 		menuGameItem1.addActionListener(sf);
 		menuGame.add(menuGameItem1);
 		menuGameItem2 = new JMenuItem("Exit");
 		menuGameItem2.addActionListener(sf);
 		menuGame.add(menuGameItem2);
-		menuAbout = new JMenu("About");
+		JMenu menuAbout = new JMenu("About");
 		menu.add(menuGame);
 		menu.add(menuAbout);
 		
 		
 		windowedContent.add("Center", cellsPanel);
 		windowedContent.add("North", fields);
-		windowedContent.add("South", statistic);
+		windowedContent.add("South", status);
 
 		frame = new JFrame();
 
@@ -107,6 +98,17 @@ public class SapperGUI {
 
 	public void setBombs(int bombs) { bombsAll = bombs ;}
 	public int getBombs() { return bombsAll;}
+
+	public void setCount(int bombs) { bombsCount.setText("Bombs - " + bombs); }
+	public void setStatus(String text) { status.setText(text); }
+
+	public void dispose() { frame.dispose(); }
+
+	public JButton getButton() { return newGame; }
+	public JMenuItem getMenuItem1() { return menuGameItem1; }
+	public JMenuItem getMenuItem2() { return menuGameItem2; }
+	public ArrayList<JButton> getCells() { return cells; }
+
 
 	public static void main(String[] args) {
 		SapperGUI sg = new SapperGUI();
