@@ -11,12 +11,16 @@ public class SapperGUI {
 	private JButton newGame;
 	private JLabel time;
 	private JLabel bombsCount;
-	private JLabel status;
+	private JLabel statusLabel;
 	private JMenuItem menuGameItem1;
 	private JMenuItem menuGameItem2;
+	private ImageIcon bombImg;
 	private ArrayList<JButton> cells;
 	private int fieldSize;
 	private int bombsAll;
+	private ArrayList<JButton> bombsCells;
+	private int[] cellsValue;
+	private boolean[] checked;
 
 	public SapperGUI() {
 		this(9, 10);
@@ -24,29 +28,42 @@ public class SapperGUI {
 
 	public SapperGUI(int size, int bombs) {
 
-		setSize(size);
-		setBombs(bombs);
+		sf = new SapperFunctional();
+		fieldSize = size * size;
+		bombsAll = bombs;
+		bombImg = new ImageIcon("images/bomb.png");
+		cells = new ArrayList<>();
+		bombsCells = new ArrayList<>();
+		cellsValue = new int[fieldSize];
+		checked = new boolean[fieldSize];
 
 
 		BorderLayout bl = new BorderLayout();
 		GridLayout gl1 = new GridLayout(size, size);
 		GridLayout gl2 = new GridLayout(1,3);
 
-
-
 		JPanel windowedContent = new JPanel();
 		windowedContent.setLayout(bl);
-
 
 		JPanel cellsPanel = new JPanel();
 		cellsPanel.setLayout(gl1);
 
 
-		cells = new ArrayList<>();
-		sf = new SapperFunctional(this);
+
 		for (int i = 0; i < fieldSize; i++) {
 			JButton cell = new JButton("");
-			cell.addActionListener(sf);
+			cell.addActionListener( event -> {
+				JButton theButton = (JButton) event.getSource();
+				if (bombsCells.contains(theButton)) {
+					endGame(false);
+				} else if (cells.contains(theButton)) {
+					sf.OpenFields(cells.indexOf(theButton), fieldSize, cellsValue, checked);
+					if (sf.countCheck == fieldSize - bombsAll) {
+						endGame(true);
+					}
+					refreshFields();
+				}
+			});
 			cellsPanel.add(cell);
 			cells.add(cell);
 		}
@@ -55,10 +72,10 @@ public class SapperGUI {
 		fields.setLayout(gl2);
 		
 		newGame = new JButton("New Game");
-		newGame.addActionListener(sf);
+		newGame.addActionListener( event -> setUpGame() );
 		bombsCount = new JLabel();
 		time = new JLabel("Time");
-		status = new JLabel("");
+		statusLabel = new JLabel("");
 
 
 		fields.add(time); fields.add(newGame); fields.add(bombsCount);
@@ -66,10 +83,10 @@ public class SapperGUI {
 		JMenuBar menu = new JMenuBar();
 		JMenu menuGame = new JMenu("Game");
 		menuGameItem1 = new JMenuItem("New game");
-		menuGameItem1.addActionListener(sf);
+		menuGameItem1.addActionListener( event -> setUpGame() );
 		menuGame.add(menuGameItem1);
 		menuGameItem2 = new JMenuItem("Exit");
-		menuGameItem2.addActionListener(sf);
+		menuGameItem2.addActionListener( event -> frame.dispose() );
 		menuGame.add(menuGameItem2);
 		JMenu menuAbout = new JMenu("About");
 		menu.add(menuGame);
@@ -78,7 +95,7 @@ public class SapperGUI {
 		
 		windowedContent.add("Center", cellsPanel);
 		windowedContent.add("North", fields);
-		windowedContent.add("South", status);
+		windowedContent.add("South", statusLabel);
 
 		frame = new JFrame();
 
@@ -90,24 +107,61 @@ public class SapperGUI {
 	}
 
 	public void setUpGame() {
-		sf.newGame();
+
+		int i = 0;
+		for (JButton cell: cells) {
+			cell.setEnabled(true);
+			cell.setText("");
+			cell.setIcon(null);
+			checked[i] = false;
+			cellsValue[i] = 0;
+			i++;
+		}
+		statusLabel.setText("");
+		bombsCount.setText("Bombs - " + bombsAll);
+		bombsCells.clear();
+		sf.countCheck = 0;
+
+
+		ArrayList<Integer> bombsCoords = sf.randomBombs(fieldSize, bombsAll);
+		for(int coordinate: bombsCoords) {
+			bombsCells.add(cells.get(coordinate));
+			cells.get(coordinate).setText("");
+			cellsValue[coordinate] = -1;
+			sf.getNumbers(coordinate, fieldSize, bombsCoords, cellsValue);
+		}
 	}
 
-	public void setSize(int size) { fieldSize = size * size; }
-	public int getSize() { return fieldSize; }
+	public void refreshFields() {
+		for (int index = 0; index < fieldSize; index++) {
+			if (checked[index]) {
+				cells.get(index).setEnabled(false);
+				if(cellsValue[index] != 0)
+					cells.get(index).setText("" + cellsValue[index]);
 
-	public void setBombs(int bombs) { bombsAll = bombs ;}
-	public int getBombs() { return bombsAll;}
+			}
+		}
 
-	public void setCount(int bombs) { bombsCount.setText("Bombs - " + bombs); }
-	public void setStatus(String text) { status.setText(text); }
+	}
 
-	public void dispose() { frame.dispose(); }
+	public void endGame(boolean status) {
 
-	public JButton getButton() { return newGame; }
-	public JMenuItem getMenuItem1() { return menuGameItem1; }
-	public JMenuItem getMenuItem2() { return menuGameItem2; }
-	public ArrayList<JButton> getCells() { return cells; }
+		int k = 0;
+		for (JButton cell: cells) {
+			if (bombsCells.contains(cell)) {
+				cell.setIcon(bombImg);
+			} else if (cellsValue[k] != 0) {
+				cell.setText("" + cellsValue[k]);
+			}
+			cell.setEnabled(false);
+			k++;
+		}
+		if(status) {
+			statusLabel.setText("You win!");
+		}else {
+			statusLabel.setText("You lose!");
+		}
+	}
 
 
 	public static void main(String[] args) {
