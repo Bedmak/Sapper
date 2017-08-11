@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class SapperGUI {
@@ -21,6 +23,8 @@ public class SapperGUI {
 	private ArrayList<JButton> bombsCells;
 	private int[] cellsValue;
 	private boolean[] checked;
+	private Timer timer;
+	private int seconds;
 
 	public SapperGUI() {
 		this(9, 10);
@@ -74,7 +78,7 @@ public class SapperGUI {
 		newGame = new JButton("New Game");
 		newGame.addActionListener( event -> setUpGame() );
 		bombsCount = new JLabel();
-		time = new JLabel("Time");
+		time = new JLabel("Time - 0");
 		statusLabel = new JLabel("");
 
 
@@ -122,6 +126,18 @@ public class SapperGUI {
 		bombsCells.clear();
 		sf.countCheck = 0;
 
+		//Work with a timer
+		seconds = 0;
+		if(timer != null) {
+			timer.cancel();
+		}
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				time.setText("Time - " + seconds++);
+			}
+		}, 0, 1000);
+
 
 		ArrayList<Integer> bombsCoords = sf.randomBombs(fieldSize, bombsAll);
 		for(int coordinate: bombsCoords) {
@@ -146,6 +162,7 @@ public class SapperGUI {
 
 	public void endGame(boolean status) {
 
+		timer.cancel();
 		int k = 0;
 		for (JButton cell: cells) {
 			if (bombsCells.contains(cell)) {
